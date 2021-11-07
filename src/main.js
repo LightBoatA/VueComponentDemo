@@ -2,6 +2,16 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 
+import notice from '@/components/notice/index.js'
+
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+
+Vue.use(ElementUI)
+
+// 挂载到vue构造函数原型上,所有组件实例都可以使用$notice方法了
+Vue.prototype.$notice = notice
+
 Vue.config.productionTip = false
 
 new Vue({
