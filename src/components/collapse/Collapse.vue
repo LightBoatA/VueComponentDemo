@@ -37,6 +37,7 @@ export default {
   created () {
     // 子项点击后,将子项名字存入数组或移除数组
     this.$on('collapse', (val) => {
+      this.$emit('change', val)
       if (this.accordion) { // 手风琴模式
         if (val === this.nameValue) {
           this.nameValue = ''
@@ -46,8 +47,8 @@ export default {
       } else {
         const index = this.nameValue.indexOf(val)
         if (index > -1) {
-          // 此时子项是打开状态,需要关闭
-          this.nameValue.splice(index)
+          // 此时子项是打开状态,需要关闭(从Index位置,删除一个元素)
+          this.nameValue.splice(index, 1)
         } else {
           this.nameValue.push(val)
         }

@@ -1,15 +1,19 @@
 <template>
-  <div v-if="isShow" class="notice_box">
-    <div class="notice_group">
-      <h2 class="notice_title">{{title}}</h2>
-      <div class="notice_content">{{message}}</div>
-      <div class="notice_close" @click="close">×</div>
+<div>
+  <transition name="fade">
+    <div v-if="isShow" class="notice_box">
+        <div class="notice_group">
+          <h2 class="notice_title">{{title}}</h2>
+          <div class="notice_content">{{message}}</div>
+          <div class="notice_close" @click="close">×</div>
+        </div>
     </div>
+  </transition>
 </div>
-
 </template>
 
 <script>
+import Vue from 'vue'
 export default {
   data () {
     return {
@@ -22,6 +26,7 @@ export default {
   methods: {
     close () {
       this.isShow = false
+      Vue.prototype.$noticeFlag = null
     }
   },
   mounted () { // 最早此时操作dom
@@ -30,6 +35,7 @@ export default {
     if (this.duration) {
       setTimeout(() => {
         this.isShow = false
+        Vue.prototype.$noticeFlag = null
       }, this.duration)
     }
   }
@@ -48,6 +54,7 @@ export default {
     border-radius: 8px;
     border: 1px solid #ebeef5;
     box-shadow: 0 2px 12px 0 rgba(0,0, 0, .1);
+    background-color: #fff;
   }
   .notice_title {
     color: #303133;
@@ -68,5 +75,11 @@ export default {
     cursor: pointer;
     color:#909399;
     font-size: 18px;
+  }
+  .fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
   }
 </style>

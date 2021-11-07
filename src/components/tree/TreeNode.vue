@@ -5,7 +5,8 @@
       <input class="checkbox" v-if="showCheckbox" type="checkbox" name="" id="" v-model="checkState" ref="cbox" @change="checkStateChanged" >
       <span class="node-text"  @click="toggleExpand">{{node.label}}</span>
     </div>
-      <ul class="child-node"  >
+      <ul class="child-node" ref="child" >
+        <!--  -->
         <tree-node
           v-show="expanted"
           v-for="(obj,index) in node.children"
@@ -54,7 +55,6 @@ export default {
         } else {
           this.$refs.icon.style.transform = 'rotate(' + 0 + 'deg)'
         }
-        // console.log(this.$refs.icon)
       }
       // 点击了谁,传到顶层
       bus.$emit('clicked', this.$data)
@@ -79,6 +79,16 @@ export default {
         index: this.index
       }
       this.$emit('check-change', eventVal)
+    },
+    getChildHeight () {
+
+    },
+    contentShow () {
+      this.$refs.child.style.height = this.getChildHeight() + 'px'
+    },
+    contentHidden () {
+      console.log('hidden')
+      this.$refs.child.style.height = 0
     },
     /** ***************************工具方法*****************************/
 
@@ -130,6 +140,10 @@ export default {
         bus.$emit('nodeCheckChanged', this.$data, state, this.$refs.cbox.indeterminate)
       }
     }
+    // 手动v-show
+    // expanted (newVal, oldVal) {
+
+    // }
   },
   created () {
     // 初始化孩子节点的checked状态
@@ -139,6 +153,9 @@ export default {
       this.isleaf = false
     }
     // this.$data.$treeLabel = 3
+  },
+  mounted () {
+
   }
 }
 </script>
@@ -158,19 +175,17 @@ export default {
   }
   .node-text {
     font-size: 14px;
-    // padding:;
   }
   // 小三角图标
   .icon-play3 {
     display: inline-block;
     font-size: 5px;
     margin-right: 5px;
-    // transition: all 0.5s;
+    transition: all 0.5s;
   }
   // 选框
   .checkbox {
-    // outline: hidden;
-    // border: 1px solid #c0c4cc;
+
     display: inline-block;
     box-sizing: border-box;
     width: 14px;
@@ -179,30 +194,14 @@ export default {
     border-radius: 2px;
     border: 1px solid red;
     margin-right: 10px;
-    // height: 50px;
   }
   .child-node {
-    // transition: all 0.5s;
     overflow: hidden;
     margin: 0;
-    // background-color: skyblue;
-    // padding: 0;;
   }
-  // 子组件创建或消失的过渡
-  .v-enter-active, .v-leave-active {
-    // transition: all 2s;
-  }
-  .v-enter, .v-leave-to /* .fade-leave-active below version 2.1.8 */ {
-    // opacity: 0;
-    // max-height: 0;
-  }
-  .v-leave,.v-enter-to {
-    // max-height: 100%;
-  }
+
   .node-label {
-    // overflow:hidden;
-    // background-color: pink;
-    // margin-top: 0;
+
     margin: 0;
     padding: 0;;
 

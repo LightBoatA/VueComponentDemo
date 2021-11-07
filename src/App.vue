@@ -35,7 +35,7 @@
       <h3 class="title">折叠面板</h3>
       <p class="description">可同时展开多个面板，面板之间不影响</p>
       <div class="comp-box">
-        <Collapse :value="activeNames">
+        <Collapse :value="activeNames" @change="collapseChange">
           <CollapseItem title="浮动特性" name="1">
             <div>脱标：脱离标准流，位置任由其它元素占有</div>
             <div>浮起来：一行显示，父盒子放不下会另起一行</div>
@@ -65,7 +65,7 @@
       <h3 class="title">折叠面板-手风琴模式</h3>
       <p class="description">每次只能展开一个面板</p>
       <div class="comp-box">
-        <Collapse :value="activeName" accordion>
+        <Collapse :value="activeName" accordion @change="collapseChange">
           <CollapseItem title="浮动特性" name="1">
             <div>脱标：脱离标准流，位置任由其它元素占有</div>
             <div>浮起来：一行显示，父盒子放不下会另起一行</div>
@@ -211,6 +211,9 @@ export default {
     },
     handleNodeClick (data) {
       console.log('点击了node:', data)
+    },
+    collapseChange (val) {
+      console.log('点击了', val)
     }
   }
 }
@@ -226,6 +229,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  height: 1600px;
 }
 
 #nav {
@@ -242,6 +246,7 @@ export default {
 }
 .center {
   width: 70%;
+
   margin: 0 auto;
   // background-color: blue;
   text-align: left;

@@ -6,6 +6,10 @@ const NoticeConstructor = Vue.extend(Notice)
 
 // notice 用组件选项创建一个组件,并挂载到dom上
 export default function notice (options) {
+  // 防止重复点击
+  if (Vue.prototype.$noticeFlag) {
+    return
+  }
   /*
   options 是个对象
   options: {
@@ -23,6 +27,7 @@ export default function notice (options) {
   instance.$mount() // dom元素渲染完成
   // (手动)挂载到body上
   document.body.appendChild(instance.$el) // $el就是组件的dom对象,template下的div
+  Vue.prototype.$noticeFlag = true
 
   /** ****把组件挂载到dom上 ********/
 
