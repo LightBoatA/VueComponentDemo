@@ -1,10 +1,17 @@
 <template>
   <div >
-    <div  class="node-label common-text "  >
+    <div class="node-line">
+      <div  class="node-label common-text "  @click="toggleExpand" >
+        <span v-show="!isleaf" ref="icon" class="icon-play3 placeholder-text" ></span>
+        <span class="node-text" ref="label" >{{node.label}}</span>
+      </div>
+      <input class="checkbox" v-if="showCheckbox" type="checkbox" name="" id="" v-model="checkState" ref="cbox" @change="checkStateChanged" >
+    </div>
+    <!-- <div  class="node-label common-text "   >
       <span v-show="!isleaf" ref="icon" class="icon-play3 placeholder-text" @click="toggleExpand"></span>
       <input class="checkbox" v-if="showCheckbox" type="checkbox" name="" id="" v-model="checkState" ref="cbox" @change="checkStateChanged" >
       <span class="node-text"  @click="toggleExpand">{{node.label}}</span>
-    </div>
+    </div> -->
       <ul class="child-node" ref="child" >
         <!--  -->
         <tree-node
@@ -46,19 +53,7 @@ export default {
     }
   },
   methods: {
-    toggleExpand () {
-      if (this.node.children && this.node.children.length) {
-        this.expanted = !this.expanted
-        // 图标旋转
-        if (this.expanted) {
-          this.$refs.icon.style.transform = 'rotate(' + 90 + 'deg)'
-        } else {
-          this.$refs.icon.style.transform = 'rotate(' + 0 + 'deg)'
-        }
-      }
-      // 点击了谁,传到顶层
-      bus.$emit('clicked', this.$data)
-    },
+
     /** ***************************工具方法*****************************/
     initCheckStates (state) {
       if (this.node.children) {
@@ -91,7 +86,20 @@ export default {
       this.$refs.child.style.height = 0
     },
     /** ***************************工具方法*****************************/
-
+    toggleExpand () {
+      if (this.node.children && this.node.children.length) {
+        this.expanted = !this.expanted
+        // 图标旋转
+        if (this.expanted) {
+          this.$refs.icon.style.transform = 'rotate(' + 90 + 'deg)'
+        } else {
+          this.$refs.icon.style.transform = 'rotate(' + 0 + 'deg)'
+        }
+      }
+      console.log('点击了')
+      // 点击了谁,传到顶层
+      bus.$emit('clicked', this.$data)
+    },
     // 用户点击
     checkStateChanged (e) {
       this.changeChildrenCheckStates() // 孩子数组修改
@@ -155,7 +163,14 @@ export default {
     // this.$data.$treeLabel = 3
   },
   mounted () {
-
+    // 如果有复选框,留出位置
+    if (this.showCheckbox) {
+      this.$refs.label.style.marginLeft = 26 + 'px'
+      // 如果是叶子节点,定位的left值要改变
+      if (this.isleaf) {
+        this.$refs.cbox.style.left = 0 + 'px'
+      }
+    }
   }
 }
 </script>
@@ -166,18 +181,25 @@ export default {
   // @import '../../assets/css/base.css';
   @import '../../assets/css/font-icon.css';
   @import '../../assets/css/color.css';
+
+  .node-line {
+    position: relative;
+  }
   .node-label {
     height: 26px;
     cursor: pointer;
+    background-color: #fff;
   }
   .node-label:hover {
     background-color: #F5F7FA;
   }
   .node-text {
+    width: 100%;
     font-size: 14px;
   }
   // 小三角图标
   .icon-play3 {
+
     display: inline-block;
     font-size: 5px;
     margin-right: 5px;
@@ -185,7 +207,9 @@ export default {
   }
   // 选框
   .checkbox {
-
+    position: absolute;
+    top: 0;
+    left: 15px;
     display: inline-block;
     box-sizing: border-box;
     width: 14px;
@@ -206,10 +230,5 @@ export default {
     padding: 0;;
 
   }
-  .test {
-    width: 20px;
-    height: 20px;
-    background-color: pink;
-    transform: rotate(90deg);
-  }
+
 </style>
